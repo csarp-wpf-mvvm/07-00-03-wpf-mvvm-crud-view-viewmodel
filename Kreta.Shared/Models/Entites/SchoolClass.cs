@@ -1,5 +1,6 @@
 ﻿using Kreta.Shared.Models.Entites.SchoolCitizens;
 using Kreta.Shared.Models.Entites.SwitchTable;
+using Kreta.Shared.Models.Enums;
 using System.Collections;
 
 namespace Kreta.Shared.Models.Entites

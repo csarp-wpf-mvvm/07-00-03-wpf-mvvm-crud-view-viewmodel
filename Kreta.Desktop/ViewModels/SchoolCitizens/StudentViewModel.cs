@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System;
 using Kreta.Shared.Models.Entites.SchoolCitizens;
+using Kreta.Shared.Models.Responses;
 
 namespace Kreta.Desktop.ViewModels.SchoolCitizens
 {
@@ -44,35 +45,48 @@ namespace Kreta.Desktop.ViewModels.SchoolCitizens
         }
 
         [RelayCommand]
-        public void DoSave(Student studentDto)
+        public async Task DoSave(Student student)
         {
-            Students.Add(studentDto);
-            SelectedStudent = new Student();
-            SelectedStudent.BirthDay = DateTime.Now.AddYears(-14);
-            OnPropertyChanged(nameof(SelectedStudent));
+            if (student is not null)
+            {
+                Response response;
+                if (student.HasId)
+                    response = await _httpService.UpdateAsync(student);
+                else
+                    response = await _httpService.InsertAsync(student);
+                ClearForm();
+                await UpdateViewAsync();
+            }
         }
 
         [RelayCommand]
         public void DoNewStudent()
         {
-            SelectedStudent = new Student();
-            SelectedStudent.BirthDay = DateTime.Now.AddYears(-14);
-            OnPropertyChanged(nameof(SelectedStudent));
+            ClearForm();
         }
 
         [RelayCommand]
-        public void DoDelete(Student studentDto)
+        public async Task DoDelete(Student student)
         {
-            Students.Remove(studentDto);
-            SelectedStudent = new Student();
-            SelectedStudent.BirthDay = DateTime.Now.AddYears(-14);
-            OnPropertyChanged(nameof(SelectedStudent));
+            if (student is not null)
+            {
+                await _httpService.DeleteAsync(student.Id);
+                ClearForm();
+                await UpdateViewAsync();
+            }
         }
 
         private async Task UpdateViewAsync()
         {
             List<Student> students = await _httpService.GetAllAsync();
             Students = new ObservableCollection<Student>(students);
+        }
+
+        private void ClearForm()
+        {
+            SelectedStudent = new Student();
+            SelectedStudent.BirthDay = DateTime.Now.AddYears(-14);
+            OnPropertyChanged(nameof(SelectedStudent));
         }
     }
 }

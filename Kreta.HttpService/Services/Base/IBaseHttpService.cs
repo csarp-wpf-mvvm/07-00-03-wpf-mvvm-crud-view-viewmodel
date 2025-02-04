@@ -1,6 +1,6 @@
 ﻿using Kreta.Shared.Models.Responses;
 
-namespace Kreta.HttpService.Services
+namespace Kreta.HttpService.Services.Base
 {
     public interface IBaseHttpService<TEntity>
     {

@@ -1,8 +1,9 @@
 ﻿using Kreta.Shared.Models.Entites;
 using Kreta.Shared.Models.Entites.SchoolCitizens;
 using Kreta.Shared.Models.Entites.SwitchTable;
+using Kreta.Shared.Models.Enums;
 
-namespace Kreta.Shared.Models
+namespace Kreta.Shared.Models.Dtos
 {
     public class SchoolClassDto
     {
